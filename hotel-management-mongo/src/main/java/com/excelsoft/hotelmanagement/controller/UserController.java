@@ -3,6 +3,7 @@ package com.excelsoft.hotelmanagement.controller;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +31,8 @@ import com.excelsoft.hotelmanagement.service.UserService;
 
 import net.jodah.expiringmap.ExpiringMap;
 
+import com.excelsoft.hotelmanagement.repository.UserRepository;
+
 @RestController
 @RequestMapping(value={"/","/user"})
 public class UserController {
@@ -37,6 +40,9 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserRepository userRepo;
 
 	private Map<String, String> otpmap = ExpiringMap.builder().expiration(10, TimeUnit.MINUTES).build();
 
@@ -72,6 +78,17 @@ public class UserController {
 	  return tasks;
 	
 	 }
+	
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Optional<User> getUserById(@PathVariable("id") String id) {
+        System.out.println("Fetching User with id " + id);
+        Optional<User> user = userRepo.findById(id);
+        if (user == null) {
+            return null;
+        }
+        return user;
+    }
+    
 	
 //	@PostMapping(value="/changePassword",headers="Accept=application/json")
 //	public ResponseEntity<User> userChangePassword(@RequestBody User user) {

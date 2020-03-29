@@ -37,13 +37,13 @@ public class UserServiceImpl implements UserService {
 		return this.userRepo.save(user);
 	}
 
-//	@Override
-//	public User getUserById(long id) {
-//		LOGGER.info("Started Hotel-Management find user getUserById Service :");
-//
-//		return this.userRepo.findById(id).orElseThrow(() -> new RuntimeException("User Not Found"));
-//	}
-//
+	@Override
+	public Optional<User> getById(String id) {
+		LOGGER.info("Started Hotel-Management find user getUserById Service :");
+
+		return (Optional<User>) this.userRepo.findById(id);
+	}
+
 //	@Override
 //	public boolean authenticateByUserName(String userName) {
 //		LOGGER.info("Started Hotel-Management find user authenticateByUserName Service :");

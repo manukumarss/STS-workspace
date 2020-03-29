@@ -1,6 +1,8 @@
 package com.excelsoft.hotelmanagement.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import com.excelsoft.hotelmanagement.entity.User;
 
 public interface UserService {
@@ -8,7 +10,7 @@ public interface UserService {
 
 	User createUser(User user);
 
-//	User getUserById(long id);
+	Optional<User> getById(String id);
 //	
 //	User findBypassword(String password); 
 //

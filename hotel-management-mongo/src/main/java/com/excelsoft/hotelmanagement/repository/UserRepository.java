@@ -12,21 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.excelsoft.hotelmanagement.entity.User;
 
-@Repository
-public interface UserRepository extends CrudRepository<User, String> {
 
-//	List<User> findAll();
-//
-//	Optional<User> findByUserName(String userName);
-//	
-//	User findBypassword(String password);
-//
-//	@Query(value = "SELECT * FROM USER_DETAILS WHERE EMAIL_ID = :emailId and password = :password", nativeQuery = true)
-//	User checkUserNameAndPasswordExistOrNot(@Param("emailId") String emailId, @Param("password") String password);
-//
-//	@Modifying
-//	@Transactional
-//	@Query(value = "UPDATE USER_DETAILS SET password = :password WHERE EMAIL_ID = :emailId", nativeQuery = true)
-//	Integer changePassword(@Param("emailId") String emailId, @Param("password") String password);
+public interface UserRepository extends CrudRepository<User, String> {
 
 }
