@@ -15,4 +15,14 @@ import com.excelsoft.hotelmanagement.entity.User;
 
 public interface UserRepository extends CrudRepository<User, String> {
 
+	User save(Optional<User> usr);
+
+	User findBypassword(String password);
+
+	//@Query(value = "SELECT * FROM USER_DETAILS WHERE EMAIL_ID = :emailId and password = :password", nativeQuery = true)
+	//@Query("{'EMAIL_ID' : ?0, 'password' : ?1}")
+	//User checkUserNameAndPasswordExistOrNot(@Param("emailId") String emailId, @Param("password") String password);
+	@Query("{'EMAIL_ID' : ?0, 'password' : ?1}")
+	User findByuserNameAndpassword(@Param("emailId") String emailId, @Param("password") String password);
+
 }

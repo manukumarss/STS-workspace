@@ -43,6 +43,18 @@ public class UserServiceImpl implements UserService {
 
 		return (Optional<User>) this.userRepo.findById(id);
 	}
+	
+	public User update(User user, String l) {
+		// TODO Auto-generated method stub
+		return userRepo.save(user);
+	}
+	
+	public User updatePartially(User user, String password) {
+		// TODO Auto-generated method stub
+		User usr = this.userRepo.findBypassword(password);
+		usr.setPassword(user.getNewPassword());
+		return this.userRepo.save(usr);
+	}
 
 //	@Override
 //	public boolean authenticateByUserName(String userName) {
@@ -59,13 +71,13 @@ public class UserServiceImpl implements UserService {
 //		return this.userRepo.findBypassword(password);
 //	}
 //
-//	@Override
-//	public User checkUserNameAndPasswordExistOrNot(String userName, String password) {
-//		LOGGER.info("Started Hotel-Management find user username and password Service :");
-//
-//		return this.userRepo.checkUserNameAndPasswordExistOrNot(userName, password);
-//
-//	}
+	@Override
+	public User checkUserNameAndPasswordExistOrNot(String userName, String password) {
+		LOGGER.info("Started Hotel-Management find user username and password Service :");
+
+		return this.userRepo.findByuserNameAndpassword(userName, password);
+
+	}
 //
 //	@Override
 //	public Integer updatePassword(String userName, String password) {

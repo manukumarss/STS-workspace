@@ -11,12 +11,16 @@ public interface UserService {
 	User createUser(User user);
 
 	Optional<User> getById(String id);
+	
+	public User update(User user, String l);
+	
+	public User updatePartially(User user, String password);
 //	
 //	User findBypassword(String password); 
 //
 //	boolean authenticateByUserName(String userName);
 //
-//	User checkUserNameAndPasswordExistOrNot(String userName,String password);
+	User checkUserNameAndPasswordExistOrNot(String userName,String password);
 //	
 //	Integer updatePassword(String userName,String password);
 }

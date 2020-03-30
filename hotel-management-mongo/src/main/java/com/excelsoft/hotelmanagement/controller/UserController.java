@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,7 @@ import net.jodah.expiringmap.ExpiringMap;
 import com.excelsoft.hotelmanagement.repository.UserRepository;
 
 @RestController
-@RequestMapping(value={"/","/user"})
+@RequestMapping(value={"/user"})
 public class UserController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
@@ -82,12 +83,57 @@ public class UserController {
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Optional<User> getUserById(@PathVariable("id") String id) {
         System.out.println("Fetching User with id " + id);
-        Optional<User> user = userRepo.findById(id);
+        Optional<User> user = userService.getById(id);
         if (user == null) {
             return null;
         }
         return user;
     }
+	
+	@PutMapping(value="/update", headers="Accept=application/json")
+	public ResponseEntity<String> userChangePassword(@RequestBody User user)
+	{
+//		System.out.println("sd");
+//		Optional<User> usr = userService.getById(user.getId());
+//	if (user==null) {
+//		return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+//	}
+	userService.updatePartially(user, user.getPassword());
+	return new ResponseEntity<String>(HttpStatus.OK);
+	}
+	
+	
+//	//@PostMapping("/login")
+	@PostMapping(value="/login",headers="Accept=application/json")
+	public ResponseEntity<User> userLogin(@RequestBody User user) {
+		LOGGER.info("Started Hotel-Management Login user :");
+		User userDetails = new User();
+		//UserResponseDTO userResponseDTO = new UserResponseDTO();
+//		if (user.getUserName() == null || user.getUserName().isEmpty()) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//		} else if (user.getPassword() == null || user.getPassword().isEmpty()) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//		} else {
+
+			try {
+				userDetails = this.userService.checkUserNameAndPasswordExistOrNot(user.getUserName(), user.getPassword());
+			} catch (Exception e) {
+				LOGGER.info("Hotel-Management Login Exception :", e);
+			}
+			if (userDetails != null) {
+				//user.setUserId(userDetails.getId());
+				user.setUserName(userDetails.getUserName());
+				user.setPassword(userDetails.getPassword());
+				user.setRoleType(userDetails.getRoleType());
+				//user.setMessage(Constants.VALID_USER);
+				LOGGER.info("End Hotel-Management Login user :");
+				return ResponseEntity.ok(user);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+	//	}
+
+	}
     
 	
 //	@PostMapping(value="/changePassword",headers="Accept=application/json")
@@ -233,7 +279,7 @@ public class UserController {
 //		}
 //
 //	}
-//
+
 //	@PostMapping("/changePassword")
 //	public ResponseEntity<UserResponseDTO> userChangePassword(@RequestBody UserRequestDTO userRequestDTO) {
 //		LOGGER.info("Started Hotel-Management user changePassword:");
